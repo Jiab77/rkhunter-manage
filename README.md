@@ -37,7 +37,7 @@ Usage: ./rkhunter-manage.sh <action>
 	restore			- Restore RootKit Hunter configuration from backup file
 	update			- Download and update Rootkit Hunter database files
 	scan			- Run Rootkit Hunter scan
-	scan-from-cron	- Run Rootkit Hunter scan from CRON
+	scan-from-cron		- Run Rootkit Hunter scan from CRON
 	show-log		- Show log from last scan
 	help			- Show help
 ```
