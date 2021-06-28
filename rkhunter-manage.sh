@@ -92,7 +92,7 @@ case "$1" in
 
         # Use 'curl' if exist to download updates
         if [[ ! $(which curl) == "" ]]; then
-            sudo sed -e 's/WEB_CMD="/bin/false"/WEB_CMD=curl/' -i $RKH_CONF
+            sudo sed -e 's|WEB_CMD="/bin/false"|WEB_CMD=curl|' -i $RKH_CONF
         fi
     ;;
 
