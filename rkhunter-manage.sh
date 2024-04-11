@@ -2,6 +2,11 @@
 
 # Rootkit Hunter management script
 # Made by Jiab77 - 2021
+#
+# Version 0.0.1
+
+# Options
+[[ -r $HOME/.debug ]] && set -o xtrace || set +o xtrace
 
 # Colors
 NC="\033[0m"
@@ -36,6 +41,9 @@ show_help() {
 # Get OS details
 source /etc/os-release
 
+# Fix OS detection
+[[ -z $ID_LIKE ]] && DISTRO=$ID || DISTRO=$ID_LIKE
+
 # Config
 RKH_CONF="/etc/rkhunter.conf"
 RKH_CONF_BACKUP="${RKH_CONF}.bak"
@@ -47,7 +55,7 @@ case "$1" in
         echo -e "${WHITE}Running ${GREEN}Rootkit Hunter${WHITE} scan...${NC}${NL}"
 
         # Defining scan command line based on linux distro
-        case $ID_LIKE in
+        case $DISTRO in
             "debian")
                 sudo rkhunter --propupd --pkgmgr DPKG --enable all --disable none --check --sk
             ;;
@@ -61,7 +69,7 @@ case "$1" in
         echo -e "${WHITE}Running ${GREEN}Rootkit Hunter${WHITE} ${PURPLE}CRON${WHITE} scan...${NC}${NL}"
 
         # Defining scan command line based on linux distro
-        case $ID_LIKE in
+        case $DISTRO in
             "debian")
                 sudo rkhunter --propupd --pkgmgr DPKG --enable all --disable none --cronjob --rwo --novl
             ;;
@@ -81,7 +89,7 @@ case "$1" in
         sudo sed -e 's/DISABLE_TESTS=suspscan hidden_ports hidden_procs deleted_files packet_cap_apps apps/DISABLE_TESTS=NONE/' -i $RKH_CONF
 
         # Enable whitelisting based on package managers
-        case $ID_LIKE in
+        case $DISTRO in
             "debian")
                 sudo sed -e 's/#PKGMGR=NONE/PKGMGR=DPKG/' -i $RKH_CONF
             ;;
