@@ -3,7 +3,7 @@
 # Rootkit Hunter management script
 # Made by Jiab77 - 2021
 #
-# Version 0.0.1
+# Version 0.0.2
 
 # Options
 [[ -r $HOME/.debug ]] && set -o xtrace || set +o xtrace
@@ -56,7 +56,7 @@ case "$1" in
 
         # Defining scan command line based on linux distro
         case $DISTRO in
-            "debian")
+            "debian"|"ubuntu"|"ubuntu debian")
                 sudo rkhunter --propupd --pkgmgr DPKG --enable all --disable none --check --sk
             ;;
             "redhat")
@@ -70,7 +70,7 @@ case "$1" in
 
         # Defining scan command line based on linux distro
         case $DISTRO in
-            "debian")
+            "debian"|"ubuntu"|"ubuntu debian")
                 sudo rkhunter --propupd --pkgmgr DPKG --enable all --disable none --cronjob --rwo --novl
             ;;
             "redhat")
@@ -90,7 +90,7 @@ case "$1" in
 
         # Enable whitelisting based on package managers
         case $DISTRO in
-            "debian")
+            "debian"|"ubuntu"|"ubuntu debian")
                 sudo sed -e 's/#PKGMGR=NONE/PKGMGR=DPKG/' -i $RKH_CONF
             ;;
             "redhat")
@@ -99,7 +99,7 @@ case "$1" in
         esac
 
         # Use 'curl' if exist to download updates
-        if [[ ! $(which curl) == "" ]]; then
+        if [[ -n $(command -v curl 2>/dev/null) ]]; then
             sudo sed -e 's|WEB_CMD="/bin/false"|WEB_CMD=curl|' -i $RKH_CONF
         fi
     ;;
